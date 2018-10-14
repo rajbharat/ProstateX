@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 ### CREATE LIST OF SUCCESSFULLY CONVERTED CASES (generated from output of dicom2nifti.py) ###
+#TODO: refactor into a function
 
 dicom2nifti_success = Path.cwd().parent / 'dicom2nifti_successful.txt'
 successful_conv = dicom2nifti_success.read_text()
@@ -11,6 +12,7 @@ successful_conv = successful_conv.split('\n')
 successful_conv = list(filter(None, successful_conv)) # For sanity - remove any empty string(s)
 
 ### CREATE DIRECTORY STRUCTURE FOR SAVING RESAMPLED CASES ###
+# TODO: Add to resample function
 
 root_dir = Path.cwd().parent
 root_dir.joinpath('nifti_resampled').mkdir()
@@ -85,6 +87,8 @@ def resample_voxel_spacing(successful_conv, path_to_nifti, path_to_resampled, de
         writer.Execute(image)
         return
     
+    #TODO: This section could stand to be refactored if there is time...
+    
     patient_folders = [x for x in path_to_nifti.iterdir() if x.is_dir()]
     for patient_folder in patient_folders:
         patient_id = patient_folder.parts[-1]
@@ -113,3 +117,8 @@ def resample_voxel_spacing(successful_conv, path_to_nifti, path_to_resampled, de
                         write_resampled_image(ktrans_resampled, path_to_nifti_resampled_ktrans)                       
 
 resample_voxel_spacing(successful_conv, nifti_folder, nifti_resampled_folder, desired_voxel)
+
+def main():
+    #TODO reorganize above code into main function
+
+#main()
