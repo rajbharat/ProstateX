@@ -12,7 +12,7 @@ successful_conv = successful_conv.split('\n')
 successful_conv = list(filter(None, successful_conv)) # For sanity - remove any empty string(s)
 
 ### CREATE DIRECTORY STRUCTURE FOR SAVING RESAMPLED CASES ###
-# TODO: Add to resample function
+#TODO: Add to resample function
 
 root_dir = Path.cwd().parent
 root_dir.joinpath('nifti_resampled').mkdir()
@@ -119,6 +119,6 @@ def resample_voxel_spacing(successful_conv, path_to_nifti, path_to_resampled, de
 resample_voxel_spacing(successful_conv, nifti_folder, nifti_resampled_folder, desired_voxel)
 
 def main():
-    #TODO reorganize above code into main function
+    #TODO: reorganize above code into main function
 
 # main()
