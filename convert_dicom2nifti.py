@@ -1,4 +1,3 @@
-import pathlib
 from pathlib import Path
 import dicom2nifti
 import os
