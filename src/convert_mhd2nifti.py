@@ -1,3 +1,9 @@
+"""
+Author: Alex Hamilton - alexhamiltonrn.github.io
+Created: 2018-09-26
+Description: A script to convert ktrans images (MHD files) in ProstateX challenge to nifti format
+"""
+
 import SimpleITK as sitk
 from pathlib import Path
 import os

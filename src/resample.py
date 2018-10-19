@@ -1,3 +1,9 @@
+"""
+Author: Alex Hamilton - alexhamiltonrn.github.io
+Created: 2018-10-14
+Description: A script for resampling nifti images (uniform voxel spacing according to findings in EDA) 
+"""
+
 import SimpleITK as sitk
 import numpy as np
 import matplotlib.pyplot as plt

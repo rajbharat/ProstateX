@@ -1,3 +1,9 @@
+"""
+Author: Alex Hamilton - alexhamiltonrn.github.io
+Created: 2018-09-26
+Description: A script to convert raw data (DICOM images) in ProstateX challenge to nifti format
+"""
+
 from pathlib import Path
 import dicom2nifti
 import os

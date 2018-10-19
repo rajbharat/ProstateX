@@ -1,3 +1,9 @@
+"""
+Author: Alex Hamilton - alexhamiltonrn.github.io
+Created: 2018-09-26
+Description: A script for generating plots for ProstateX challenge data
+"""
+
 import SimpleITK as sitk
 import matplotlib.pyplot as plt
 from pathlib import Path
