@@ -10,19 +10,17 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 ### CREATE LIST OF SUCCESSFULLY CONVERTED CASES (generated from output of dicom2nifti.py) ###
-#TODO: refactor into a function
-
-dicom2nifti_success = Path.cwd().parent / 'dicom2nifti_successful.txt'
+dicom2nifti_success = Path.cwd().parent / 'logs/dicom2nifti_successful.txt'
 successful_conv = dicom2nifti_success.read_text()
 successful_conv = successful_conv.split('\n')
 successful_conv = list(filter(None, successful_conv)) # For sanity - remove any empty string(s)
 
 ### CREATE DIRECTORY STRUCTURE FOR SAVING RESAMPLED CASES ###
-#TODO: Add to resample function
+# **NOTE**: change to 'data/generated/nifti_resampled' on server
 
 root_dir = Path.cwd().parent
-root_dir.joinpath('nifti_resampled').mkdir()
-path_to_nifti_resampled = Path.cwd().parent / 'nifti_resampled'
+root_dir.joinpath('local_data/generated/nifti_resampled').mkdir() 
+path_to_nifti_resampled = Path.cwd().parent / 'local_data/generated/nifti_resampled'
 path_to_nifti_resampled.joinpath('adc').mkdir()
 path_to_nifti_resampled.joinpath('bval').mkdir()
 path_to_nifti_resampled.joinpath('ktrans').mkdir()
@@ -31,8 +29,8 @@ path_to_nifti_resampled.joinpath('t2').mkdir()
 ### RESAMPLING CASES ###
 
 # Set paths to original data and resampled folders
-nifti_folder = Path.cwd().parent / 'nifti_copy'
-nifti_resampled_folder = Path.cwd().parent / 'nifti_resampled'
+nifti_folder = Path.cwd().parent / 'local_data/generated/nifti'
+nifti_resampled_folder = Path.cwd().parent / 'local_data/generated/nifti_resampled'
 
 
 # Set desired spacing based on EDA
@@ -43,8 +41,20 @@ desired_voxel = {'t2':(0.5,0.5,3.0),
 
 
 def resample_voxel_spacing(successful_conv, path_to_nifti, path_to_resampled, desired_voxel_spacing):
-    
+    """
+    A function to resample the voxel spacing of nifti images. Accepts a list of patients who were successfully
+    converted after executing the convert_dicom2nifti and convert_mhd2nifti scripts in a previous assignment.
+    Also accepts Path objects to the nifti files and the location for storing resampled images. Finally, the
+    function accepts a dictionary with key, value pairs for the desired voxel spacing (determined during EDA) 
+    for the four sequences: t2, adc, bval, and ktrans.  
+    """
     def resample_image(desired_voxel_spacing, source_file_path):
+        """
+        A function that utilizes sitk.ResampleImageFilter() to resample the source image. The function
+        accepts a tuple describing the desired voxel spacing and a path object for the original source
+        image on the disk. The function returns a resampled image after recalculating the size and 
+        spacing of the source image.
+        """
         image = sitk.ReadImage(str(source_file_path))
         original_image_spacing = image.GetSpacing()
         
@@ -122,9 +132,7 @@ def resample_voxel_spacing(successful_conv, path_to_nifti, path_to_resampled, de
                         ktrans_resampled = resample_image(desired_voxel.get('ktrans'), file_path)
                         write_resampled_image(ktrans_resampled, path_to_nifti_resampled_ktrans)                       
 
-resample_voxel_spacing(successful_conv, nifti_folder, nifti_resampled_folder, desired_voxel)
-
 def main():
-    #TODO: reorganize above code into main function
+    resample_voxel_spacing(successful_conv, nifti_folder, nifti_resampled_folder, desired_voxel)
 
-# main()
+main()
