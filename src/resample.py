@@ -1,5 +1,5 @@
 """
-Author: Alex Hamilton - alexhamiltonrn.github.io
+Author: Alex Hamilton - https://github.com/alexhamiltonRN
 Created: 2018-10-14
 Description: A script for resampling nifti images (uniform voxel spacing according to findings in EDA) 
 """

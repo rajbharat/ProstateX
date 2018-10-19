@@ -1,5 +1,5 @@
 """
-Author: Alex Hamilton - alexhamiltonrn.github.io
+Author: Alex Hamilton - https://github.com/alexhamiltonRN
 Created: 2018-09-26
 Description: A script to convert ktrans images (MHD files) in ProstateX challenge to nifti format
 """
