@@ -1,6 +1,7 @@
-/data
-/local_data
-
+# Setup
 .vscode
 
+# Directories
+/data
+/local_data
 /notebooks/.ipynb_checkpoints
