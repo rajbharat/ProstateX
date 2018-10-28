@@ -99,6 +99,8 @@ def join_dataframes (sequence_df, images_train_df, findings_train_df):
 
     return final_merge
 
+#TODO: Implement function to tidy up enties (i.e. create tuples for pos values)
+
 def main():
     ### Load the ProstateX datasets
     images_train = pd.read_csv(str(path_data) + '/raw/train_labels/ProstateX-Images-Train.csv')
