@@ -11,9 +11,11 @@ import json
 
 def generate_paths_to_dicom():
     
-    """This function generates a dictionary containing the patient id as the primary key
-    and assigns a second dictionary containing the paths to the t2, adc, and bval dicom folders
-    for conversion to nifti later"""
+    """
+    This function generates a dictionary containing the patient id as the
+    primary key and assigns a second dictionary containing the paths to the t2,
+    adc, and bval dicom folders for conversion to nifti later
+    """
     
     print('Generating paths to dicom files for conversion...')
     paths_to_dicom = {}
@@ -52,13 +54,16 @@ def generate_paths_to_dicom():
 
 def convert_dicom2nifti(paths_to_dicom_files):
     
-    """This function does the actual conversion of dicom files to nifti by supplying the dicom2nifti
-    convert_directory method with the path to the original dicom files and to a new directory. A nifti subdirectory
-    in the main project folder is created.
+    """
+    This function does the actual conversion of dicom files to nifti by
+    supplying the dicom2nifti convert_directory method with the path to the
+    original dicom files and to a new directory. A nifti subdirectory in the
+    main project folder is created.
 
-    * Note: dicom2nifti fails on approximately 40 patients in the data folder due to unsupported file types. 
-    A command line tool to remedy this problem was challenging to install and configure. This is considered a TOFIX
-    for future work on this project. 
+    * Note: dicom2nifti fails on approximately 40 patients in the data folder
+      due to unsupported file types. A command line tool to remedy this problem
+      was challenging to install and configure. This is considered a TOFIX for
+      future work on this project. 
     """
     
     print('Generating new file structure and nifti files...')

@@ -42,17 +42,20 @@ desired_voxel = {'t2':(0.5,0.5,3.0),
 
 def resample_voxel_spacing(successful_conv, path_to_nifti, path_to_resampled, desired_voxel_spacing):
     """
-    A function to resample the voxel spacing of nifti images. Accepts a list of patients who were successfully
-    converted after executing the convert_dicom2nifti and convert_mhd2nifti scripts in a previous assignment.
-    Also accepts Path objects to the nifti files and the location for storing resampled images. Finally, the
-    function accepts a dictionary with key, value pairs for the desired voxel spacing (determined during EDA) 
-    for the four sequences: t2, adc, bval, and ktrans.  
+    A function to resample the voxel spacing of nifti images. Accepts a list of
+    patients who were successfully converted after executing the
+    convert_dicom2nifti and convert_mhd2nifti scripts in a previous assignment.
+    Also accepts Path objects to the nifti files and the location for storing
+    resampled images. Finally, the function accepts a dictionary with key, value
+    pairs for the desired voxel spacing (determined during EDA) for the four
+    sequences: t2, adc, bval, and ktrans.  
     """
     def resample_image(desired_voxel_spacing, source_file_path):
         """
-        A function that utilizes sitk.ResampleImageFilter() to resample the source image. The function
-        accepts a tuple describing the desired voxel spacing and a path object for the original source
-        image on the disk. The function returns a resampled image after recalculating the size and 
+        A function that utilizes sitk.ResampleImageFilter() to resample the
+        source image. The function accepts a tuple describing the desired voxel
+        spacing and a path object for the original source image on the disk. The
+        function returns a resampled image after recalculating the size and
         spacing of the source image.
         """
         image = sitk.ReadImage(str(source_file_path))

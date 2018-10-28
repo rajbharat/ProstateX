@@ -10,7 +10,10 @@ import os
 
 def generate_ktrans_folder():
     
-    """This function generates a ktrans folder inside patient folders under the nifti directory (created with convert_dicom2nifti.py)"""
+    """
+    This function generates a ktrans folder inside patient folders under the
+    nifti directory (created with convert_dicom2nifti.py)
+    """
 
     path_to_nifti = Path('./nifti')
     patient_folders = [x for x in path_to_nifti.iterdir() if x.is_dir()]
@@ -19,7 +22,9 @@ def generate_ktrans_folder():
 
 def convert_mhd2nifti():
     
-    """ This function converts ktrans mhd files to nifti using SimpleITK"""
+    """ 
+    This function converts ktrans mhd files to nifti using SimpleITK
+    """
     
     print('Generating nifti files from mhd...')
 

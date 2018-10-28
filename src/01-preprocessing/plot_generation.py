@@ -10,8 +10,10 @@ from pathlib import Path
 
 def get_information_for_image(image_path):
     
-    """This function accepts a path object and returns a tuple containing voxel spacing (tuple) and 
-    image size (tuple) for the nifti file at the given path"""
+    """
+    This function accepts a path object and returns a tuple containing voxel
+    spacing (tuple) and image size (tuple) for the nifti file at the given path
+    """
    
     sitk_image = sitk.ReadImage(str(image_path))
     voxel_spacing = sitk_image.GetSpacing()
@@ -20,8 +22,11 @@ def get_information_for_image(image_path):
     
 def process_modality(modality):
     
-    """This function accepts a modality (str) and returns a dict containing voxel spacings (lst of tuples) 
-    and image sizes (lst of tuples) for the desired modality"""
+    """
+    This function accepts a modality (str) and returns a dict containing voxel
+    spacings (lst of tuples) and image sizes (lst of tuples) for the desired
+    modality
+    """
     
     voxel_spacings = []
     image_sizes = []
@@ -40,8 +45,11 @@ def process_modality(modality):
 
 def generate_charts(modality):
     
-    """This function accepts a modality (str) and returns a bar chart of voxel spacing and image sizes for
-    all patients in the dataset. Plots for each modality are saved as PDF to a plots folder."""
+    """
+    This function accepts a modality (str) and returns a bar chart of voxel
+    spacing and image sizes for all patients in the dataset. Plots for each
+    modality are saved as PDF to a plots folder.
+    """
     
     processed_modality = process_modality(modality)
     voxel_spacings = processed_modality['voxel_spacings']
