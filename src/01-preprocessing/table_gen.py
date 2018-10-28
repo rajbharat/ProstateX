@@ -25,7 +25,7 @@ def generate_df_for_sequence(sequence_type, successful_conv):
     table can be joined to the other training files to create one large table
     with the appropriate sampling information.
     """
-    
+
     nifti = path_data / 'generated/nifti'
     patient_data = {}
     patient_folders = [x for x in nifti.iterdir() if x.is_dir()]
@@ -106,7 +106,6 @@ def main():
     findings_train = pd.read_csv(str(path_data) + '/raw/train_labels/ProstateX-Findings-Train.csv')
 
     ### Check for successful dicom conversions
-    # dicom2nifti_success = Path.cwd().parent / 'logs/dicom2nifti_successful.txt' #TODO: fix this
     dicom2nifti_success = Path('./logs/dicom2nifti_successful.txt')
     successful_conv = dicom2nifti_success.read_text()
     successful_conv = successful_conv.split('\n')
