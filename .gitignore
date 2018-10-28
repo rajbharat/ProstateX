@@ -2,7 +2,5 @@
 .vscode
 
 # Directories
-/data
-/local_data
 /notebooks/.ipynb_checkpoints
 /logs
