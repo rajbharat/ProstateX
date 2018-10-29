@@ -50,7 +50,6 @@ def generate_df_for_sequence(sequence_type, successful_conv):
                             return value
                         
                         def get_path_to_resampled(sequence_type):
-                            # nifti_resampled = root_dir.joinpath('data/generated/nifti_re-sampled')
                             nifti_resampled = path_data.joinpath('generated/nifti_resampled')
                             sequence_types = [x for x in nifti_resampled.iterdir() if x.is_dir()]
                             for sequence in sequence_types:
@@ -130,10 +129,11 @@ def repair_entries(dataframe):
     dataframe = dataframe.assign(pos_tuple = convert_to_tuple(dataframe, 'pos'))
     dataframe = dataframe.assign(ijk_tuple = convert_to_tuple(dataframe, 'ijk'))
     
-    # Drop old columns and rename new ones...
-    dataframe = dataframe.drop(columns = ['pos','ijk'])
+    # Drop old columns, rename new ones, and reorder...
+    dataframe = dataframe.drop(columns = ['pos','ijk', 'WorldMatrix'])
     dataframe = dataframe.rename(columns = {'pos_tuple':'pos', 'ijk_tuple':'ijk'})
-    
+    column_titles = ['ProxID', 'DCMSerDescr', 'path_to_resampled_file', 'fid', 'pos', 'ijk', 'zone', 'ClinSig']
+    dataframe = dataframe.reindex(columns = column_titles)
     return dataframe
 
 def main():
@@ -157,7 +157,7 @@ def main():
     # t2 findings
     t2_findings = join_dataframes(t2_df, images_train, findings_train)
     t2_repaired = repair_entries(t2_findings)
-    t2_repaired.to_csv(str(tables_path) + 't2_train.csv')
+    t2_repaired.to_csv(str(tables_path) + '/t2_train.csv')
     t2_repaired.to_pickle(str(tables_path) + '/t2_train.pkl')
 
     # adc_findings
