@@ -7,21 +7,23 @@ generation of training and test datasets.
 """
 
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
+import pickle
 from pathlib import Path
 
-### Setting the root path for the data folder
+# Setting the root path for the data folder
 path_data = Path.home().joinpath('Documents/DataProjects/Data/MBI/ProstateX')
 path_string = '~/Documents/DataProjects/Data/MBI/ProstateX'
 
-### Functions
+# Create directory to store tables
+tables_path = Path.home().joinpath('Documents/DataProjects/Data/MBI/ProstateX/generated/tables/')
+tables_path.mkdir(exist_ok = True)
+
 def generate_df_for_sequence(sequence_type, successful_conv):
     """
-    This function generates a dataframe for all patients in the dataset. Each
-    row contains a string that is analgous to the DCMSerDescr label in the
+    This function generates a data frame for all patients in the data set. Each
+    row contains a string that is analogous to the DCMSerDescr label in the
     provided train files. This string is generated from the original filename.
-    The second column contains a path object for the resampled nifti file. This
+    The second column contains a path object for the re-sampled nifti file. This
     table can be joined to the other training files to create one large table
     with the appropriate sampling information.
     """
@@ -48,7 +50,7 @@ def generate_df_for_sequence(sequence_type, successful_conv):
                             return value
                         
                         def get_path_to_resampled(sequence_type):
-                            #nifti_resampled = root_dir.joinpath('data/generated/nifti_resampled')
+                            # nifti_resampled = root_dir.joinpath('data/generated/nifti_re-sampled')
                             nifti_resampled = path_data.joinpath('generated/nifti_resampled')
                             sequence_types = [x for x in nifti_resampled.iterdir() if x.is_dir()]
                             for sequence in sequence_types:
@@ -99,31 +101,81 @@ def join_dataframes (sequence_df, images_train_df, findings_train_df):
 
     return final_merge
 
-#TODO: Implement function to tidy up enties (i.e. create tuples for pos values)
+def repair_entries(dataframe):
+    """
+    This function accepts a dataframe and reformats entries in select columns to
+    make them more ammenable to use in the next phase of the analysis. 
+    """
+
+    def convert_to_tuple(dataframe, column):
+        """
+        A function to convert row values (represented as string of floats
+        delimited by spaces) to a tuple of floats. Accepts the original data
+        frame and a string for the specified column that needs to be converted.
+        """  
+        pd_series_containing_lists_of_strings = dataframe[column].str.split() 
+        list_for_new_series = []
+        for list_of_strings in pd_series_containing_lists_of_strings:
+            container_list = []
+            for item in list_of_strings:
+                if column == 'pos':
+                    container_list.append(float(item))
+                else:
+                    container_list.append(int(item))
+            list_for_new_series.append(tuple(container_list))
+        
+        return pd.Series(list_for_new_series)    
+
+    # Call function to convert select columns
+    dataframe = dataframe.assign(pos_tuple = convert_to_tuple(dataframe, 'pos'))
+    dataframe = dataframe.assign(ijk_tuple = convert_to_tuple(dataframe, 'ijk'))
+    
+    # Drop old columns and rename new ones...
+    dataframe = dataframe.drop(columns = ['pos','ijk'])
+    dataframe = dataframe.rename(columns = {'pos_tuple':'pos', 'ijk_tuple':'ijk'})
+    
+    return dataframe
 
 def main():
-    ### Load the ProstateX datasets
+    # Load the ProstateX datasets
     images_train = pd.read_csv(str(path_data) + '/raw/train_labels/ProstateX-Images-Train.csv')
     ktrans_train = pd.read_csv(str(path_data) + '/raw/train_labels/ProstateX-Images-KTrans-Train.csv')
     findings_train = pd.read_csv(str(path_data) + '/raw/train_labels/ProstateX-Findings-Train.csv')
 
-    ### Check for successful dicom conversions
-    dicom2nifti_success = Path('./logs/dicom2nifti_successful.txt')
+    # Check for successful dicom conversions
+    dicom2nifti_success = Path.home().joinpath('Documents/DataProjects/Code/MBI/ProstateX/logs/dicom2nifti_successful.txt')
     successful_conv = dicom2nifti_success.read_text()
     successful_conv = successful_conv.split('\n')
     successful_conv = list(filter(None, successful_conv)) # For sanity - remove any empty string(s)
 
-    ### Generating dataframe of information for specified sequence
+    # Generating dataframe of information for specified sequence
     t2_df = generate_df_for_sequence('t2', successful_conv)
     adc_df = generate_df_for_sequence('adc', successful_conv)
     bval_df = generate_df_for_sequence('bval', successful_conv)
     ktrans_df = generate_df_for_sequence('ktrans', successful_conv)
 
-    ### Generating dataframes for specific sequences and associated findings
+    # t2 findings
     t2_findings = join_dataframes(t2_df, images_train, findings_train)
-    adc_findings = join_dataframes(adc_df, images_train, findings_train)
-    bval_findings = join_dataframes(bval_df, images_train, findings_train)
-    ktrans_findings = join_dataframes(ktrans_df, ktrans_train, findings_train)
+    t2_repaired = repair_entries(t2_findings)
+    t2_repaired.to_csv(str(tables_path) + 't2_train.csv')
+    t2_repaired.to_pickle(str(tables_path) + '/t2_train.pkl')
 
-    print(t2_findings.head(25))
+    # adc_findings
+    adc_findings = join_dataframes(adc_df, images_train, findings_train)
+    adc_repaired = repair_entries(adc_findings)
+    adc_repaired.to_csv(str(tables_path) + '/adc_train.csv')
+    adc_repaired.to_pickle(str(tables_path) + '/adc_train.pkl')
+    
+    # bval_findings = join_dataframes(bval_df, images_train, findings_train)
+    bval_findings = join_dataframes(bval_df, images_train, findings_train)
+    bval_repaired = repair_entries(bval_findings)
+    bval_repaired.to_csv(str(tables_path) + '/bval_train.csv')
+    bval_repaired.to_pickle(str(tables_path) + '/bval_train.pkl')
+
+    # ktrans_findings = join_dataframes(ktrans_df, ktrans_train, findings_train)
+    ktrans_findings = join_dataframes(ktrans_df, ktrans_train, findings_train)
+    ktrans_repaired = repair_entries(ktrans_findings)
+    ktrans_repaired.to_csv(str(tables_path) + '/ktrans_train.csv')
+    ktrans_repaired.to_pickle(str(tables_path) + '/ktrans_train.pkl')
+
 main()
