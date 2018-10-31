@@ -60,7 +60,7 @@ def main():
     adc_patch_size = 8
     bval_patch_size = 8
     ktrans_patch_size = 8
-    
+
     # Load training_tables 
     t2_train_table = pd.read_pickle('/Users/alexanders-13mbp/Documents/DataProjects/Data/MBI/ProstateX/generated/tables/t2_train.pkl')
     adc_train_table = pd.read_pickle('/Users/alexanders-13mbp/Documents/DataProjects/Data/MBI/ProstateX/generated/tables/adc_train.pkl')
@@ -72,12 +72,14 @@ def main():
     new_adc_table = add_patch_columns_to_df(adc_train_table, adc_patch_size)
     new_bval_table = add_patch_columns_to_df(bval_train_table, bval_patch_size)
     new_ktrans_table = add_patch_columns_to_df(ktrans_train_table, ktrans_patch_size)
-
+    
     # Drop duplicate rows
-    t2_unique = new_t2_table.drop_duplicates()
-    adc_unique = new_adc_table.drop_duplicates()
-    bval_unique = new_bval_table.drop_duplicates()
-    ktrans_unique = new_ktrans_table.drop_duplicates()
+    compare_columns = ['ProxID', 'DCMSerDescr', 'path_to_resampled_file', 'fid', 'pos', 'ijk', 'zone', 'ClinSig']
+
+    t2_unique = new_t2_table.drop_duplicates(subset = compare_columns)
+    adc_unique = new_adc_table.drop_duplicates(subset = compare_columns)
+    bval_unique = new_bval_table.drop_duplicates(subset = compare_columns)
+    ktrans_unique = new_ktrans_table.drop_duplicates(subset = compare_columns)
 
     # Persist new training data tables to disk
     tables_path = Path.home().joinpath('Documents/DataProjects/Data/MBI/ProstateX/generated/training_data/')
