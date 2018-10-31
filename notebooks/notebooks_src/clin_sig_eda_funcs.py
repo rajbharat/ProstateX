@@ -33,6 +33,19 @@ def calculate_origin_size_patch(location_of_finding, desired_patch_size):
     rect_y = y - desired_patch_size // 2
     return (rect_x, rect_y, desired_patch_size)
 
+def extract_patch(image_array, location_of_finding, desired_patch_size):
+    x = location_of_finding[0]
+    y = location_of_finding[1]
+
+    arr_x_start_index = x - (desired_patch_size // 2)
+    arr_x_end_index = x + (desired_patch_size // 2)
+    arr_y_start_index = y - (desired_patch_size // 2)
+    arr_y_end_index = y + (desired_patch_size //2)
+
+    extracted_patch = image_array[location_of_finding[2], arr_y_start_index:arr_y_end_index, arr_x_start_index:arr_x_end_index]
+
+    return extracted_patch
+
 def plot_sig_sequence_for_patient(patient_id, desired_sequence, desired_patch_size):
     significant_sequences = pd.DataFrame()
     
@@ -51,6 +64,7 @@ def plot_sig_sequence_for_patient(patient_id, desired_sequence, desired_patch_si
         sitk_image, image_array = load_image(path_to_resampled_file)
         location_of_finding = calculate_location_of_finding(sitk_image, reported_position)
         origin_size_patch = calculate_origin_size_patch(location_of_finding, desired_patch_size)
+        extracted_patch = extract_patch(image_array, location_of_finding, desired_patch_size)
 
         fig, ax = plt.subplots(1)
         ax.imshow(image_array[location_of_finding[2],:,:], cmap = 'gray', origin = 'lower')
@@ -58,7 +72,10 @@ def plot_sig_sequence_for_patient(patient_id, desired_sequence, desired_patch_si
         ax.add_patch(rect)
         plt.show()
 
-plot_sig_sequence_for_patient('ProstateX-0005', 't2', 30)
+        plt.imshow(extracted_patch, cmap = 'gray', origin = 'lower')
+        plt.show()
+
+plot_sig_sequence_for_patient('ProstateX-0005', 't2', 32)
 plot_sig_sequence_for_patient('ProstateX-0005', 'adc', 6)
 plot_sig_sequence_for_patient('ProstateX-0005', 'bval', 6)
 plot_sig_sequence_for_patient('ProstateX-0005', 'ktrans', 6)
