@@ -1,32 +1,103 @@
+"""
+Author: Alex Hamilton - https://github.com/alexhamiltonRN
+Created: 2018-10-31 12:53 PM
+Description:
+"""
+
 import pandas as pd
-import numpy as np 
-import matplotlib.pyplot
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+import SimpleITK as sitk
+
+from skimage import exposure
 from pathlib import Path
 
-images_train = pd.read_csv('data/test_labels/ProstateX-Images-Train.csv')
-ktrans_train = pd.read_csv('data/test_labels/ProstateX-Images-KTrans-Train.csv')
-findings = pd.read_csv('data/test_labels/ProstateX-Findings-Train.csv')
+## load training_tables
+t2_train_table = pd.read_pickle('/Users/alexanders-13mbp/Documents/DataProjects/Data/MBI/ProstateX/generated/tables/t2_train.pkl')
+adc_train_table = pd.read_pickle('/Users/alexanders-13mbp/Documents/DataProjects/Data/MBI/ProstateX/generated/tables/adc_train.pkl')
+bval_train_table = pd.read_pickle('/Users/alexanders-13mbp/Documents/DataProjects/Data/MBI/ProstateX/generated/tables/bval_train.pkl')
+ktrans_train_table = pd.read_pickle('/Users/alexanders-13mbp/Documents/DataProjects/Data/MBI/ProstateX/generated/tables/ktrans_train.pkl')
 
-print(images_train.head())
-print(findings.head())
+def load_image(path_to_resampled_file):
+    sitk_image = sitk.ReadImage(str(path_to_resampled_file))
+    image_array = sitk.GetArrayViewFromImage(sitk_image)
+    return sitk_image, image_array
 
-# The lesion information in ProstateX-Findings-Train.csv contains location 
-# of the findings (biopsy) in each patient in the world coordinate system (LPS) 
-# and the pathology for each finding. Some patients may have more than one finding. 
+def calculate_location_of_finding(sitk_image, reported_position):
+    location_of_finding = sitk_image.TransformPhysicalPointToIndex(reported_position)
+    return location_of_finding
 
-# Need to extract only the region of interest around the biopsy site to 
-# learn the characteristics of cancer. At end of process, should have an
-# aggregated array per sequence (num_of_findings, crop_size_x, crop_size_y, crop_size_z)
+def calculate_origin_size_patch(location_of_finding, desired_patch_size):
+    x = location_of_finding[0]
+    y = location_of_finding[1]
+    rect_x = x - desired_patch_size // 2 
+    rect_y = y - desired_patch_size // 2
+    return (rect_x, rect_y, desired_patch_size)
 
-# four sequences = four arrays
+def equalize_image(image_array):
+    image_array = exposure.equalize_hist(image_array)
+    return image_array
 
-# t2
-#ProxID - match to patient ID
-#Name - to lowercase match to lowercase filename
-#DCMSerDescr - to lowercase match to lowercase filename
-#log unsuccessful
+def extract_patch(image_array, location_of_finding, desired_patch_size):
+    x = location_of_finding[0]
+    y = location_of_finding[1]
 
-# create dataframe containing | Patient_ID | image_name (without extension)
+    arr_x_start_index = x - (desired_patch_size // 2)
+    arr_x_end_index = x + (desired_patch_size // 2)
+    arr_y_start_index = y - (desired_patch_size // 2)
+    arr_y_end_index = y + (desired_patch_size // 2)
 
+    extracted_patch = image_array[location_of_finding[2], arr_y_start_index:arr_y_end_index, arr_x_start_index:arr_x_end_index]
+    return extracted_patch
 
+def plot_sig_sequence_for_patient(patient_id, desired_sequence, desired_patch_size):
+    significant_sequences = pd.DataFrame()
+    
+    def plot_image_with_selection(image_array, location_of_finding, origin_size_patch, desired_patch_size):
+        fig, ax = plt.subplots(1)
+        ax.imshow(image_array[location_of_finding[2],:,:], cmap = 'gray', origin = 'lower')
+        rect = patches.Rectangle((origin_size_patch[0], origin_size_patch[1]), desired_patch_size, desired_patch_size, linewidth=1, edgecolor='r', facecolor='none')
+        ax.add_patch(rect)
+        plt.show()
 
+    if desired_sequence == 't2':
+        significant_sequences = t2_train_table[(t2_train_table['ClinSig'] == True) & (t2_train_table['ProxID'] == patient_id)]
+    elif desired_sequence == 'adc':
+        significant_sequences = adc_train_table[(adc_train_table['ClinSig'] == True) & (adc_train_table['ProxID'] == patient_id)]
+    elif desired_sequence == 'bval':
+        significant_sequences = bval_train_table[(bval_train_table['ClinSig'] == True) & (bval_train_table['ProxID'] == patient_id)]
+    elif desired_sequence == 'ktrans':
+        significant_sequences = ktrans_train_table[(ktrans_train_table['ClinSig'] == True) & (ktrans_train_table['ProxID'] == patient_id)]
+
+    for row in significant_sequences.itertuples():
+        path_to_resampled_file = getattr(row, 'path_to_resampled_file')
+        reported_position = getattr(row, 'pos')
+        sitk_image, image_array = load_image(path_to_resampled_file)
+        location_of_finding = calculate_location_of_finding(sitk_image, reported_position)
+        origin_size_patch = calculate_origin_size_patch(location_of_finding, desired_patch_size)
+        equalized_image_array = equalize_image(image_array)
+        unaltered_patch = extract_patch(image_array, location_of_finding, desired_patch_size)
+        equalized_patch = extract_patch(equalized_image_array, location_of_finding, desired_patch_size)
+        
+        # plot unaltered image with cancer selection
+        plot_image_with_selection(image_array, location_of_finding, origin_size_patch, desired_patch_size)
+
+        # plot equalized image with cancer selection
+        plot_image_with_selection(equalized_image_array, location_of_finding, origin_size_patch, desired_patch_size)
+
+        # plot unaltered patch
+        plt.imshow(unaltered_patch, cmap = 'gray', origin = 'lower')
+        plt.show()
+
+        # plot equalized patch
+        plt.imshow(equalized_patch, cmap = 'gray', origin = 'lower')
+
+plot_sig_sequence_for_patient('ProstateX-0005', 't2', 32) 
+plot_sig_sequence_for_patient('ProstateX-0005', 'adc', 8)
+plot_sig_sequence_for_patient('ProstateX-0005', 'bval', 8)
+plot_sig_sequence_for_patient('ProstateX-0005', 'ktrans', 8)
+
+plot_sig_sequence_for_patient('ProstateX-0019', 't2', 32)
+plot_sig_sequence_for_patient('ProstateX-0019', 'adc', 8)
+plot_sig_sequence_for_patient('ProstateX-0019', 'bval', 8)
+plot_sig_sequence_for_patient('ProstateX-0019', 'ktrans', 8)

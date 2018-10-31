@@ -75,7 +75,16 @@ def plot_sig_sequence_for_patient(patient_id, desired_sequence, desired_patch_si
         plt.imshow(extracted_patch, cmap = 'gray', origin = 'lower')
         plt.show()
 
+
+# ProstateX-0005
 plot_sig_sequence_for_patient('ProstateX-0005', 't2', 32)
-plot_sig_sequence_for_patient('ProstateX-0005', 'adc', 6)
-plot_sig_sequence_for_patient('ProstateX-0005', 'bval', 6)
-plot_sig_sequence_for_patient('ProstateX-0005', 'ktrans', 6)
+plot_sig_sequence_for_patient('ProstateX-0005', 'adc', 8)
+plot_sig_sequence_for_patient('ProstateX-0005', 'bval', 8)
+plot_sig_sequence_for_patient('ProstateX-0005', 'ktrans', 8)
+
+# ProstateX-0019
+print('ProstateX-0019')
+plot_sig_sequence_for_patient('ProstateX-0019', 't2', 32)
+plot_sig_sequence_for_patient('ProstateX-0019', 'adc', 8)
+plot_sig_sequence_for_patient('ProstateX-0019', 'bval', 8)
+plot_sig_sequence_for_patient('ProstateX-0019', 'ktrans', 8)
