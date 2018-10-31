@@ -97,6 +97,10 @@ def main():
     ktrans_unique.to_csv(str(tables_path) + '/ktrans_training_data.csv')
     ktrans_unique.to_pickle(str(tables_path) + '/ktrans_training_data.pkl')
 
+   #TODO: Create column where arrays are scales 0-1 - using whole image?
+   #TODO: Create column where arrays have zero-mean and unit variance for optimizing techniques
+   #TODO: Check and correct for class imbalances? Data augmentation techniques - skew and rotation
+   
     # CHECKING PATCHES FOR PROSTATEX-0005
     # 0005_t2 = new_t2_table.iloc[1]
     # plt.imshow(0005_t2['patches'][0], cmap = 'gray', origin='lower')
