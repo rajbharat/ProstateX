@@ -5,19 +5,20 @@ Description: A script to generate dataframes containing all the
 necessary information to complete path extraction and for later 
 generation of training and test datasets.
 """
-
+#%% DEPENDENCIES
 import pandas as pd
 import pickle
 from pathlib import Path
 
-# Setting the root path for the data folder
-path_data = Path.home().joinpath('Documents/DataProjects/Data/MBI/ProstateX')
-path_string = '~/Documents/DataProjects/Data/MBI/ProstateX'
+#%% SETTING ROOT PATH TO DATA FOLDER
+path_data = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX')
+path_string = '~/home/alex/Documents/DataProjects/Data/MBI/ProstateX'
 
-# Create directory to store tables
-tables_path = Path.home().joinpath('Documents/DataProjects/Data/MBI/ProstateX/generated/tables/')
+#%% GENERATING FILE STRUCTURE TO STORE TABLES
+tables_path = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/tables/')
 tables_path.mkdir(exist_ok = True)
 
+#%% MERGING TRAINING TABLES
 def generate_df_for_sequence(sequence_type, successful_conv):
     """
     This function generates a data frame for all patients in the data set. Each
@@ -92,11 +93,12 @@ def join_dataframes (sequence_df, images_train_df, findings_train_df):
         images_train_df.loc[:,'DCMSerDescr'] = images_train_df.loc[:,'DCMSerDescr'].apply(lambda x: x.lower())
         images_train_df = images_train_df[['ProxID', 'DCMSerDescr', 'fid', 'pos', 'WorldMatrix', 'ijk']]
         
-        first_merge = pd.merge(sequence_df, images_train_df, how = 'left', on = ['ProxID', 'DCMSerDescr'])    
-        final_merge = pd.merge(first_merge, findings_train_df, how = 'left', on = ['ProxID', 'fid','pos'])
+        # the join was originally 'left' --> changed to 'inner' to retain values from both dataframes only because NaN gen in pos column
+        first_merge = pd.merge(sequence_df, images_train_df, how = 'inner', on = ['ProxID', 'DCMSerDescr'])    
+        final_merge = pd.merge(first_merge, findings_train_df, how = 'inner', on = ['ProxID', 'fid','pos'])
     else:
-        first_merge = pd.merge(sequence_df, images_train_df, how = 'left', on = ['ProxID'])
-        final_merge = pd.merge(first_merge, findings_train_df, how = 'left', on = ['ProxID', 'fid', 'pos'])
+        first_merge = pd.merge(sequence_df, images_train_df, how = 'inner', on = ['ProxID'])
+        final_merge = pd.merge(first_merge, findings_train_df, how = 'inner', on = ['ProxID', 'fid', 'pos'])
 
     return final_merge
 
@@ -143,7 +145,7 @@ def main():
     findings_train = pd.read_csv(str(path_data) + '/raw/train_labels/ProstateX-Findings-Train.csv')
 
     # Check for successful dicom conversions
-    dicom2nifti_success = Path.home().joinpath('Documents/DataProjects/Code/MBI/ProstateX/logs/dicom2nifti_successful.txt')
+    dicom2nifti_success = Path('/home/alex/Documents/DataProjects/Code/MBI/ProstateX/logs/dicom2nifti_successful.txt')
     successful_conv = dicom2nifti_success.read_text()
     successful_conv = successful_conv.split('\n')
     successful_conv = list(filter(None, successful_conv)) # For sanity - remove any empty string(s)
