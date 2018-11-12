@@ -3,35 +3,30 @@ Author: Alex Hamilton - https://github.com/alexhamiltonRN
 Created: 2018-10-14
 Description: A script for resampling nifti images (uniform voxel spacing according to findings in EDA) 
 """
-
+#%% DEPENDENCIES
 import SimpleITK as sitk
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-### CREATE LIST OF SUCCESSFULLY CONVERTED CASES (generated from output of dicom2nifti.py) ###
-dicom2nifti_success = Path.cwd().parent / 'logs/dicom2nifti_successful.txt'
+#%% CREATE LIST OF SUCCESSFULLY CONVERTED CASES (generated from output of dicom2nifti.py)
+dicom2nifti_success = Path('/home/alex/Documents/DataProjects/Code/MBI/ProstateX/logs/dicom2nifti_successful.txt')
 successful_conv = dicom2nifti_success.read_text()
 successful_conv = successful_conv.split('\n')
 successful_conv = list(filter(None, successful_conv)) # For sanity - remove any empty string(s)
 
-### CREATE DIRECTORY STRUCTURE FOR SAVING RESAMPLED CASES ###
-# **NOTE**: change to 'data/generated/nifti_resampled' on server
+#%% SETTING PATHS TO NIFTI AND NIFTI RESAMPLED
+path_to_nifti_resampled = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/nifti_resampled')
+path_to_nifti = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/nifti')
 
-root_dir = Path.cwd().parent
-root_dir.joinpath('local_data/generated/nifti_resampled').mkdir() 
-path_to_nifti_resampled = Path.cwd().parent / 'local_data/generated/nifti_resampled'
+#%% CREATE DIRECTORY STRUCTURE FOR SAVING RESAMPLED CASES
+path_to_nifti_resampled.mkdir()
 path_to_nifti_resampled.joinpath('adc').mkdir()
 path_to_nifti_resampled.joinpath('bval').mkdir()
 path_to_nifti_resampled.joinpath('ktrans').mkdir()
 path_to_nifti_resampled.joinpath('t2').mkdir()
 
-### RESAMPLING CASES ###
-
-# Set paths to original data and resampled folders
-nifti_folder = Path.cwd().parent / 'local_data/generated/nifti'
-nifti_resampled_folder = Path.cwd().parent / 'local_data/generated/nifti_resampled'
-
+#%% RESAMPLING CASES
 
 # Set desired spacing based on EDA
 desired_voxel = {'t2':(0.5,0.5,3.0),
@@ -136,6 +131,6 @@ def resample_voxel_spacing(successful_conv, path_to_nifti, path_to_resampled, de
                         write_resampled_image(ktrans_resampled, path_to_nifti_resampled_ktrans)                       
 
 def main():
-    resample_voxel_spacing(successful_conv, nifti_folder, nifti_resampled_folder, desired_voxel)
+    resample_voxel_spacing(successful_conv, path_to_nifti, path_to_nifti_resampled, desired_voxel)
 
 main()
