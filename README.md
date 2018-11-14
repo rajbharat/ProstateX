@@ -1,14 +1,14 @@
+## Project Description
 Repository for my work in CISC 881 (Queen's University Medical Image Processing Course) that uses data from the [ProstateX challenge](https://www.aapm.org/GrandChallenge/PROSTATEx-2/).
 
-Part 1:
+### Data Citation
 
-- Remove DICOM metadata by converting to nifti format. (convert_dicom2nifti.py)
-- Convert ktrans data (mhd files) to nifti (convert_mhd2nifti.py)
-- Complete EDA (plots) on newly created dataset - mainly determine voxel space for t2, adc, bval, and ktrans datasets for further maniputation in second assignment (plot_generation.py)
+Geert Litjens, Oscar Debats, Jelle Barentsz, Nico Karssemeijer, and Henkjan Huisman. "ProstateX Challenge data", The Cancer Imaging Archive (2017). ([data](https://doi.org/10.7937/K9TCIA.2017.MURS5CL))
 
-Part 2:
+### Publication Citation
 
-- Histogram equalization experimentation (histogram_equalization.ipynb)
-- Filtering in frequency domain (2dfft.ipynd)
-- Resampling voxel spacing of nifti files to represent the majority class for t2, adc, bval, and ktrans (See EDA in part 1).
-- Patch cropping for training set in deep learning model (TBI)
+G. Litjens, O. Debats, J. Barentsz, N. Karssemeijer and H. Huisman. "Computer-aided detection of prostate cancer in MRI", IEEE Transactions on Medical Imaging 2014;33:1083-1092.
+
+### TCIA Citation
+
+Clark K, Vendt B, Smith K, Freymann J, Kirby J, Koppel P, Moore S, Phillips S, Maffitt D, Pringle M, Tarbox L, Prior F. The Cancer Imaging Archive (TCIA): Maintaining and Operating a Public Information Repository, Journal of Digital Imaging, Volume 26, Number 6, December, 2013, pp 1045-1057. ([paper](http://link.springer.com/article/10.1007%2Fs10278-013-9622-7))
