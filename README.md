@@ -2,14 +2,17 @@
 Repository for my work in CISC 881 (Queen's University Medical Image Processing Course) that uses data from the [ProstateX challenge](https://www.aapm.org/GrandChallenge/PROSTATEx-2/).
 
 ### Data Preprocessing
-01_generate_filestruct.py:  
+01_generate_directories.py:  
 This script generates the directory structure for the generated data in this project. The user is presented with an option to generate the directory structure for the training data or the test data when this script is executed. 
 
-02_convert2nifti.py:   
+02_convert_to_nifti.py:   
 This script converts DICOM (t2, adc, bval) and MHD (ktrans) files to NIFTI for processing. Conversion to NIFTI removes metadata that is not necessary for model training. The user is presented with an option to convert the raw data for the training set and test set when the script is executed. The dicom2nifti and SimpleITK packages are required in the user environment for this script to execute successfully.
 
 03_resample_nifti.py:  
 This script resamples NIFTI files using SimpleITK based on information obtained during exploratory data analysis. The user is presented with an option to resample the training or test datsets when the script is executed. Resampled images are saved in the nifti_resampled folder with the same hierarchy as the unprocessed data. 
+
+04_compile_meta_data.py:
+This script merges the ProstateX-Images (or ProstateX-Images-Ktrans) data frames with ProstateX-Findings. It also appends paths to the resampled NIFTI files for each case for use in the patch extraction script. The user is presented with the option to compile the meta data for the training or test datasets when the script is executed. Output is saved to the dataframes folder as appropriate.
 
 #### Data Citation
 
