@@ -43,16 +43,25 @@ def generate_cases_meta_df(is_training_data, sequence_type):
         for sequence in sequences:
             if sequence.parts[-1] == sequence_type:
                 for item in sequence.rglob('*.*'):
-                    contructed_DCMSerDesc = generate_DCMSerDescr_from_filename(item)
+                    constructed_DCMSerDescr = generate_DCMSerDescr_from_filename(item)
                     path_to_resampled = item
 
+                    if 't2' in constructed_DCMSerDescr:
+                        sequence_type = 't2'
+                    elif 'adc' in constructed_DCMSerDescr:
+                        sequence_type = 'adc'
+                    elif 'bval' in constructed_DCMSerDescr:
+                        sequence_type = 'bval'
+                    else: 
+                        sequence_type = 'ktrans'
+
                     key = patient.parts[-1]
-                    value = [contructed_DCMSerDesc, path_to_resampled]
+                    value = [constructed_DCMSerDescr, path_to_resampled, sequence_type]
                     patient_data[key] = value
 
     cases_meta_data_df = pd.DataFrame.from_dict(patient_data, orient = 'index')
     cases_meta_data_df = cases_meta_data_df.reset_index()
-    cases_meta_data_df.columns = ['ProxID', 'DCMSerDescr', 'resampled_nifti']
+    cases_meta_data_df.columns = ['ProxID', 'DCMSerDescr', 'resampled_nifti', 'sequence_type']
     
     return cases_meta_data_df
 
@@ -141,9 +150,9 @@ def repair_values(is_training_data, dataframe):
     dataframe = dataframe.rename(columns = {'pos_tuple':'pos', 'ijk_tuple':'ijk'})
 
     if is_training_data:
-        repaired_df = dataframe.loc[:,['ProxID', 'DCMSerDescr', 'resampled_nifti', 'fid', 'pos', 'ijk', 'zone', 'ClinSig']]
+        repaired_df = dataframe.loc[:,['ProxID', 'DCMSerDescr', 'resampled_nifti', 'sequence_type', 'fid', 'pos', 'ijk', 'zone', 'ClinSig']]
     else:
-        repaired_df = dataframe.loc[:,['ProxID', 'DCMSerDescr', 'resampled_nifti', 'fid', 'pos', 'ijk', 'zone']]
+        repaired_df = dataframe.loc[:,['ProxID', 'DCMSerDescr', 'resampled_nifti', 'sequence_type', 'fid', 'pos', 'ijk', 'zone']]
     
     return repaired_df
 
@@ -171,7 +180,7 @@ def main():
     complete_df = join_data(is_training_data, sequence_df_array)
     final_df = repair_values(is_training_data, complete_df)
     
-    final_dataframe_deduplicated = final_df.drop_duplicates()
+    final_dataframe_deduplicated = final_df.drop_duplicates(subset=['ProxID', 'sequence_type', 'pos'], keep = 'first')
     save_data_to_directory(is_training_data, final_dataframe_deduplicated)
     
 main()
