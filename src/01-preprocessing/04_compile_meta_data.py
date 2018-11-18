@@ -18,11 +18,11 @@ def generate_cases_meta_df(is_training_data, sequence_type):
     """
 
     if is_training_data:
-        path_lesion_information = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/raw/train/lesion_information_train_204')
-        path_resampled_nifti = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/nifti_resampled') 
+        path_lesion_information = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/raw/train/lesion_information_train_204')
+        path_resampled_nifti = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/train/nifti_resampled') 
     else:
-        path_lesion_information = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/raw/test/lesion_information_test_140')
-        path_resampled_nifti = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/nifti_resampled')
+        path_lesion_information = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/raw/test/lesion_information_test_140')
+        path_resampled_nifti = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/test/nifti_resampled')
     
     patient_data = {}
 
@@ -77,13 +77,13 @@ def join_data(is_training_data, sequence_df_array):
     """
 
     if is_training_data:
-        prostateX_images = pd.read_csv('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/raw/train/lesion_information_train_204/ProstateX-Images-Train.csv')
-        prostateX_images_ktrans = pd.read_csv('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/raw/train/lesion_information_train_204/ProstateX-Images-KTrans-Train.csv')
-        prostateX_findings = pd.read_csv('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/raw/train/lesion_information_train_204/ProstateX-Findings-Train.csv')
+        prostateX_images = pd.read_csv('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/raw/train/lesion_information_train_204/ProstateX-Images-Train.csv')
+        prostateX_images_ktrans = pd.read_csv('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/raw/train/lesion_information_train_204/ProstateX-Images-KTrans-Train.csv')
+        prostateX_findings = pd.read_csv('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/raw/train/lesion_information_train_204/ProstateX-Findings-Train.csv')
     else:
-        prostateX_images = pd.read_csv('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/raw/test/lesion_information_test_140/ProstateX-Images-Test.csv')
-        prostateX_images_ktrans = pd.read_csv('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/raw/test/lesion_information_test_140/ProstateX-Images-KTrans-Test.csv')
-        prostateX_findings = pd.read_csv('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/raw/test/lesion_information_test_140/ProstateX-Findings-Test.csv')
+        prostateX_images = pd.read_csv('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/raw/test/lesion_information_test_140/ProstateX-Images-Test.csv')
+        prostateX_images_ktrans = pd.read_csv('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/raw/test/lesion_information_test_140/ProstateX-Images-KTrans-Test.csv')
+        prostateX_findings = pd.read_csv('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/raw/test/lesion_information_test_140/ProstateX-Findings-Test.csv')
   
     df_collection = []
     
@@ -159,11 +159,11 @@ def repair_values(is_training_data, dataframe):
 
 def save_data_to_directory(is_training_data, dataframe):
     if is_training_data:
-        dataframe.to_csv('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/dataframes/training_meta_data.csv')
-        dataframe.to_pickle('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/dataframes/training_meta_data.pkl')
+        dataframe.to_csv('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/train/dataframes/training_meta_data.csv')
+        dataframe.to_pickle('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/train/dataframes/training_meta_data.pkl')
     else:
-        dataframe.to_csv('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dataframes/test_meta_data.csv')
-        dataframe.to_pickle('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dataframes/test_meta_data.pkl')
+        dataframe.to_csv('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dataframes/test_meta_data.csv')
+        dataframe.to_pickle('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dataframes/test_meta_data.pkl')
 
 def main():
     is_training_data = False

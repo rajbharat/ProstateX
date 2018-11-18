@@ -16,9 +16,9 @@ def generate_patient_ids(dataset_type):
     path_to_date = Path()
     
     if dataset_type == str(1):
-        path_to_data = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/raw/train/dicom_train_204')
+        path_to_data = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/raw/train/dicom_train_204')
     else:
-        path_to_data = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/raw/test/dicom_test_140')
+        path_to_data = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/raw/test/dicom_test_140')
     
     # Get list of patient_ids in folder
     patient_folders = [x for x in path_to_data.iterdir() if x.is_dir()]
@@ -37,7 +37,7 @@ def generate_nifti_ds(patient_ids, dataset_type):
     """
     for patient_id in patient_ids:
         if dataset_type == str(1):
-            new_path = Path(str('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/nifti/' + patient_id))
+            new_path = Path(str('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/train/nifti/' + patient_id))
             new_path.mkdir(parents = True, exist_ok = True)
             new_path.joinpath('t2').mkdir(parents = True, exist_ok = True)
             new_path.joinpath('bval').mkdir(parents = True, exist_ok = True)
@@ -45,7 +45,7 @@ def generate_nifti_ds(patient_ids, dataset_type):
             new_path.joinpath('ktrans').mkdir(parents = True, exist_ok = True)
 
         else:
-            new_path = Path(str('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/nifti/' + patient_id))
+            new_path = Path(str('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/test/nifti/' + patient_id))
             new_path.mkdir(parents = True, exist_ok = True)
             new_path.joinpath('t2').mkdir(parents = True, exist_ok = True)
             new_path.joinpath('bval').mkdir(parents = True, exist_ok = True)
@@ -63,7 +63,7 @@ def generate_nifti_resampled_ds(patient_ids, dataset_type):
     """
     for patient_id in patient_ids:
         if dataset_type == str(1):
-            new_path = Path(str('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/nifti_resampled/' + patient_id))
+            new_path = Path(str('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/train/nifti_resampled/' + patient_id))
             new_path.mkdir(parents = True, exist_ok = True)
             new_path.joinpath('t2').mkdir(parents = True, exist_ok = True)
             new_path.joinpath('bval').mkdir(parents = True, exist_ok = True)
@@ -71,7 +71,7 @@ def generate_nifti_resampled_ds(patient_ids, dataset_type):
             new_path.joinpath('ktrans').mkdir(parents = True, exist_ok = True)
 
         else:
-            new_path = Path(str('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/nifti_resampled/' + patient_id))
+            new_path = Path(str('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/test/nifti_resampled/' + patient_id))
             new_path.mkdir(parents = True, exist_ok = True)
             new_path.joinpath('t2').mkdir(parents = True, exist_ok = True)
             new_path.joinpath('bval').mkdir(parents = True, exist_ok = True)
@@ -88,14 +88,14 @@ def generate_numpy_ds(dataset_type):
     ProstateX/generated/test/numpy
     """
     if dataset_type == str(1):
-        new_path = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/numpy/')
+        new_path = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/train/numpy/')
         new_path.mkdir(parents = True, exist_ok = True)
         new_path.joinpath('t2').mkdir(parents = True, exist_ok = True)
         new_path.joinpath('bval').mkdir(parents = True, exist_ok = True)
         new_path.joinpath('adc').mkdir(parents = True, exist_ok = True)
         new_path.joinpath('ktrans').mkdir(parents = True, exist_ok = True)
     else:
-        new_path = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/numpy/')
+        new_path = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/test/numpy/')
         new_path.mkdir(parents = True, exist_ok = True)
         new_path.joinpath('t2').mkdir(parents = True, exist_ok = True)
         new_path.joinpath('bval').mkdir(parents = True, exist_ok = True)
@@ -104,20 +104,20 @@ def generate_numpy_ds(dataset_type):
         
 def generate_dataframe_ds(dataset_type):
     if dataset_type == str(1):
-        new_path = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/dataframes/')
+        new_path = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/train/dataframes/')
         new_path.mkdir(parents = True, exist_ok = True)
 
     else:
-        new_path = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dataframes/')
+        new_path = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dataframes/')
         new_path.mkdir(parents = True, exist_ok = True)
 
 def generate_logs_ds(dataset_type):
     if dataset_type == str(1):
-        new_path = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/logs/')
+        new_path = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/train/logs/')
         new_path.mkdir(parents = True, exist_ok = True)
 
     else:
-        new_path = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/logs/')
+        new_path = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/test/logs/')
         new_path.mkdir(parents = True, exist_ok = True)
 
 def main():

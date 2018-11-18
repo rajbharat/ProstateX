@@ -22,9 +22,9 @@ def generate_paths_to_dicom(is_training_data):
     paths_to_dicom = {}
     
     if is_training_data:
-        path_to_data = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/raw/train/dicom_train_204')
+        path_to_data = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/raw/train/dicom_train_204')
     else:
-        path_to_data = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/raw/test/dicom_test_140') 
+        path_to_data = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/raw/test/dicom_test_140') 
     
     patient_folders = [x for x in path_to_data.iterdir() if x.is_dir()]
     for patient_folder in patient_folders:
@@ -61,9 +61,9 @@ def convert_dicom2nifti(paths_to_dicom, is_training_data):
     path_to_nifti = Path()
 
     if is_training_data:
-        path_to_nifti = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/nifti/')
+        path_to_nifti = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/train/nifti/')
     else:
-        path_to_nifti = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/nifti/')
+        path_to_nifti = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/test/nifti/')
 
     counter = 1
 
@@ -86,12 +86,12 @@ def convert_dicom2nifti(paths_to_dicom, is_training_data):
 
         except:
             if is_training_data:
-                f = open('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/dicom2nifti_train_problem_cases.txt', 'a+')
+                f = open('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/train/dicom2nifti_train_problem_cases.txt', 'a+')
                 f.write(patient_id +"\n")
                 f.close()
                 print('Problem with:', patient_id)
             else:
-                f = open('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dicom2nifti_train_problem_cases.txt', 'a+')
+                f = open('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dicom2nifti_train_problem_cases.txt', 'a+')
                 f.write(patient_id +"\n")
                 f.close()
                 print('Problem with:', patient_id)
@@ -107,11 +107,11 @@ def convert_mhd2nifti(is_training_data):
     print('Generating nifti files from mhd...\n')
 
     if is_training_data:
-        path_to_nifti = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/nifti/')
-        path_to_ktrans_data = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/raw/train/ktrans_train_204')
+        path_to_nifti = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/train/nifti/')
+        path_to_ktrans_data = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/raw/train/ktrans_train_204')
     else:
-        path_to_nifti = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/nifti')
-        path_to_ktrans_data = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/raw/test/ktrans_test_140')
+        path_to_nifti = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/test/nifti')
+        path_to_ktrans_data = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/raw/test/ktrans_test_140')
 
     counter = 1
     patient_folders = [x for x in path_to_ktrans_data.iterdir() if x.is_dir()]

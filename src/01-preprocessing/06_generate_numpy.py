@@ -83,7 +83,7 @@ def persist_numpy_to_disk(is_training_data, data):
     ktrans_labels = data.get('ktrans')[1]
 
     if is_training_data:
-        root_path = '/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/numpy'
+        root_path = '/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/train/numpy'
         
         np.save(Path(root_path + '/t2/X_train.npy'), t2_images)
         np.save(Path(root_path + '/t2/Y_train.npy'), t2_labels)
@@ -97,7 +97,7 @@ def persist_numpy_to_disk(is_training_data, data):
         np.save(Path(root_path + '/ktrans/X_train.npy'), ktrans_images)
         np.save(Path(root_path + '/ktrans/Y_train.npy'), ktrans_labels)
     else:
-        root_path = '/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/numpy'
+        root_path = '/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/test/numpy'
         
         np.save(Path(root_path + '/t2/X_train.npy'), t2_images)
         np.save(Path(root_path + '/t2/Y_train.npy'), t2_labels)
@@ -118,9 +118,9 @@ def main():
         is_training_data = True
 
     if is_training_data:
-        data = pd.read_pickle('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/dataframes/training.pkl')
+        data = pd.read_pickle('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/train/dataframes/training.pkl')
     else:
-        data = pd.read_pickled('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dataframes/testing.pkl')
+        data = pd.read_pickled('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dataframes/testing.pkl')
     
     numpy_data = generate_image_sequence(is_training_data, data)
     persist_numpy_to_disk(is_training_data, numpy_data)

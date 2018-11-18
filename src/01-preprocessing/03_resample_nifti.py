@@ -21,11 +21,11 @@ def resample_voxel_spacing(is_training_data, desired_voxel_spacing):
     counter = 1
 
     if is_training_data:
-        path_to_nifti = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/nifti')
-        path_to_nifti_resampled = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/nifti_resampled')   
+        path_to_nifti = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/train/nifti')
+        path_to_nifti_resampled = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/train/nifti_resampled')   
     else:
-        path_to_nifti = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/nifti')
-        path_to_nifti_resampled = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/nifti_resampled')
+        path_to_nifti = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/test/nifti')
+        path_to_nifti_resampled = Path('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/test/nifti_resampled')
     
     # Methods
 

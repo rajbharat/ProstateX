@@ -100,11 +100,11 @@ def remove_problem_cases(dataframe, problem_cases):
 
 def persist_data(is_training_data, dataframe):
     if is_training_data:
-        dataframe.to_csv('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/dataframes/training.csv')
-        dataframe.to_pickle('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/dataframes/training.pkl')
+        dataframe.to_csv('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/train/dataframes/training.csv')
+        dataframe.to_pickle('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/train/dataframes/training.pkl')
     else:
-        dataframe.to_csv('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dataframes/testing.csv')
-        dataframe.to_pickle('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dataframes/testing.pkl')
+        dataframe.to_csv('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dataframes/testing.csv')
+        dataframe.to_pickle('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dataframes/testing.pkl')
 
 def main():
     is_training_data = False
@@ -120,12 +120,12 @@ def main():
     }
     
     if is_training_data:
-        dataset = pd.read_pickle('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/dataframes/training_meta_data.pkl')
+        dataset = pd.read_pickle('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/train/dataframes/training_meta_data.pkl')
         complete_dataset = add_patch_columns_to_df(dataset, patch_sizes)
         clean_dataset = remove_problem_cases(complete_dataset, problem_cases)
         persist_data(is_training_data, clean_dataset)
     else:
-        dataset = pd.read_pickle('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dataframes/test_meta_data.pkl')
+        dataset = pd.read_pickle('/home/alexander/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dataframes/test_meta_data.pkl')
         complete_dataset = add_patch_columns_to_df(dataset, patch_sizes)
         clean_dataset = remove_problem_cases(complete_dataset, problem_cases)
         persist_data(is_training_data, clean_dataset)
