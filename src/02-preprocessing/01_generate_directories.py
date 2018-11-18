@@ -90,10 +90,17 @@ def generate_numpy_ds(dataset_type):
     if dataset_type == str(1):
         new_path = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/numpy/')
         new_path.mkdir(parents = True, exist_ok = True)
-
+        new_path.joinpath('t2').mkdir(parents = True, exist_ok = True)
+        new_path.joinpath('bval').mkdir(parents = True, exist_ok = True)
+        new_path.joinpath('adc').mkdir(parents = True, exist_ok = True)
+        new_path.joinpath('ktrans').mkdir(parents = True, exist_ok = True)
     else:
         new_path = Path('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/numpy/')
         new_path.mkdir(parents = True, exist_ok = True)
+        new_path.joinpath('t2').mkdir(parents = True, exist_ok = True)
+        new_path.joinpath('bval').mkdir(parents = True, exist_ok = True)
+        new_path.joinpath('adc').mkdir(parents = True, exist_ok = True)
+        new_path.joinpath('ktrans').mkdir(parents = True, exist_ok = True)
         
 def generate_dataframe_ds(dataset_type):
     if dataset_type == str(1):
