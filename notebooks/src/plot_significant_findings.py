@@ -1,3 +1,9 @@
+"""
+Author: Alex Hamilton - https://github.com/alexhamiltonRN
+Created: 2018-11-17
+Description: A script to plot significant findings.
+"""
+
 #%%
 import pandas as pd
 import numpy as np
