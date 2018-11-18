@@ -16,10 +16,7 @@ from skimage import exposure
 problem_cases = []
 
 def generate_patches(row, patch_sizes):
-    """
-    This function generate patches from the resampled NIFTI files.
-    """
-
+ 
     path_to_resampled_file = row.resampled_nifti
     reported_pos = row.pos
 
@@ -95,11 +92,10 @@ def add_patch_columns_to_df(dataframe, patch_sizes):
 def remove_problem_cases(dataframe, problem_cases):
     problem_cases = set(problem_cases)
     to_delete = []
-    for id, row in dataframe.iterrows():
-        # MAY WANT TO CONSIDER REMOVING PATIENTS (PROXID) FROM ALL TABLES TO BALANCE TRAINING DATA?
+    for row_id, row in dataframe.iterrows():
         if (row.ProxID in problem_cases) and (row.DCMSerDescr in problem_cases):
-            to_delete.append(id)
-    clean_dataframe = dataframe.drop(to_delete)
+            to_delete.append(row.ProxID)
+    clean_dataframe = dataframe[~dataframe['ProxID'].isin(set(to_delete))]
     return clean_dataframe
 
 def persist_data(is_training_data, dataframe):
@@ -107,8 +103,8 @@ def persist_data(is_training_data, dataframe):
         dataframe.to_csv('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/dataframes/training.csv')
         dataframe.to_pickle('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/train/dataframes/training.pkl')
     else:
-        dataframe.to_csv('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dataframes/training.csv')
-        dataframe.to_pickle('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dataframes/training.pkl')
+        dataframe.to_csv('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dataframes/testing.csv')
+        dataframe.to_pickle('/home/alex/Documents/DataProjects/Data/MBI/ProstateX/generated/test/dataframes/testing.pkl')
 
 def main():
     is_training_data = False
