@@ -12,6 +12,7 @@ import pickle
 from pathlib import Path
 from scipy import ndimage
 from skimage import exposure
+from sklearn.preprocessing import MinMaxScaler
 
 problem_cases = []
 
@@ -70,6 +71,11 @@ def generate_patches(row, patch_sizes):
         patch_270 = ndimage.rotate(image_array, 270, reshape=False)
         return (patch_45, patch_90, patch_180, patch_270)
     
+    def rescale_intensities_of_patch(patch):
+        scaler = MinMaxScaler(feature_range = (0,1)).fit(patch)
+        rescaled_patch = scaler.transform(patch)
+        return rescaled_patch
+
     sitk_image, image_array = load_image(path_to_resampled_file)
     location_of_finding = calculate_location_of_finding(sitk_image, reported_pos)
     
@@ -82,8 +88,15 @@ def generate_patches(row, patch_sizes):
     eq_90 = generate_rotations(eq_patch)[1]
     eq_180 = generate_rotations(eq_patch)[2]
     eq_270 = generate_rotations(eq_patch)[3]
+
+    patch_01 = rescale_intensities_of_patch(patch)
+    eq_patch_01 = rescale_intensities_of_patch(eq_patch)
+    eq_45_01 = rescale_intensities_of_patch(eq_45)
+    eq_90_01 = rescale_intensities_of_patch(eq_90)
+    eq_180_01 = rescale_intensities_of_patch(eq_180)
+    eq_270_01 = rescale_intensities_of_patch(eq_270)
     
-    patch_values = pd.Series({'patch':patch, 'eq_patch':eq_patch, 'eq_45':eq_45, 'eq_90':eq_90, 'eq_180':eq_180, 'eq_270':eq_270})
+    patch_values = pd.Series({'patch':patch_01, 'eq_patch':eq_patch_01, 'eq_45':eq_45_01, 'eq_90':eq_90_01, 'eq_180':eq_180_01, 'eq_270':eq_270_01})
     return patch_values
 
 def add_patch_columns_to_df(dataframe, patch_sizes):
