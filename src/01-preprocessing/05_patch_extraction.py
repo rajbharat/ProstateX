@@ -64,10 +64,11 @@ def generate_patches(row, patch_sizes):
         return extracted_patch
     
     def generate_rotations(image_array):
+        patch_45 = ndimage.rotate(image_array, 45, reshape=False)
         patch_90 = ndimage.rotate(image_array, 90, reshape=False)
         patch_180 = ndimage.rotate(image_array, 180, reshape=False)
         patch_270 = ndimage.rotate(image_array, 270, reshape=False)
-        return (patch_90, patch_180, patch_270)
+        return (patch_45, patch_90, patch_180, patch_270)
     
     sitk_image, image_array = load_image(path_to_resampled_file)
     location_of_finding = calculate_location_of_finding(sitk_image, reported_pos)
@@ -77,11 +78,12 @@ def generate_patches(row, patch_sizes):
     
     patch = extract_patch(raw_image_array, location_of_finding, patch_size)
     eq_patch = extract_patch(equalized_image_array, location_of_finding, patch_size)
-    eq_90 = generate_rotations(eq_patch)[0]
-    eq_180 = generate_rotations(eq_patch)[1]
-    eq_270 = generate_rotations(eq_patch)[2]
+    eq_45 = generate_rotations(eq_patch)[0]
+    eq_90 = generate_rotations(eq_patch)[1]
+    eq_180 = generate_rotations(eq_patch)[2]
+    eq_270 = generate_rotations(eq_patch)[3]
     
-    patch_values = pd.Series({'patch':patch, 'eq_patch':eq_patch, 'eq_90':eq_90, 'eq_180':eq_180, 'eq_270':eq_270})
+    patch_values = pd.Series({'patch':patch, 'eq_patch':eq_patch, 'eq_45':eq_45, 'eq_90':eq_90, 'eq_180':eq_180, 'eq_270':eq_270})
     return patch_values
 
 def add_patch_columns_to_df(dataframe, patch_sizes):
