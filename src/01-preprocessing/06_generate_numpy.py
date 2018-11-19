@@ -18,8 +18,8 @@ def generate_image_sequence(is_training_data, data):
 
 
     def balance_classes(sequence):
-        # class balance is approximately 3.2/1 in favour of noncancer - therefore 
-        # cancer related cases are oversampled by adding 3 rotations to the dataset
+        # class balance is approximately 3/1 in favour of noncancer - therefore 
+        # cancer cases are oversampled by adding 4 rotations (45, 90, 180, 270) to the dataset
 
         patch_sequence = []
         significance_sequence = []
@@ -27,6 +27,9 @@ def generate_image_sequence(is_training_data, data):
         for row_id, row in sequence.iterrows():
             if row.ClinSig == True:
                 patch_sequence.append(row.eq_patch)
+                significance_sequence.append(1)
+
+                patch_sequence.append(row.eq_45)
                 significance_sequence.append(1)
 
                 patch_sequence.append(row.eq_90)
