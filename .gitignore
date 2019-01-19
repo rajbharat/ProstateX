@@ -1,5 +1,6 @@
 # Setup
 .vscode
+.idea
 
 # Directories
 /notebooks/.ipynb_checkpoints
